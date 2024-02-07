@@ -3,6 +3,7 @@ import TrackGenerator
 import HitGenerator
 import PatternEncoder
 import DetectorTrackGraphMatplotlib
+import modules
 import sys
 import matplotlib as mpl
 mpl.use('Agg')
@@ -21,15 +22,18 @@ ntracks = int(sys.argv[2])
 # Do we want to save the pattern bank, only necessary when running many tracks
 SavePatterns = bool(sys.argv[3])
 
+modules=modules.ModuleNumber()
 # Initialise the detector
 detector = DetectorGenerator.DetectorGenerator()
 # How many layers in the detector
-detector.NumberOfLayers  = 4  
+detector.NumberOfLayers  = modules.changedetector()[2]
 # How many modules in each layer 
-detector.NumberOfModules = [3,3,3,3]
+detector.NumberOfModules = modules.changedetector()[0]
+#[3,3,3,3]
 # How long is each module in each layer of the detector, no overlaps so module length < 2/3 where 3 is from number of modules 
 # in each layer and 2 from the fact the detector spans -1 to 1
-detector.ModuleLength    = [0.63,0.63,0.63,0.63]
+detector.ModuleLength    = modules.changedetector()[1]
+#[0.63,0.63,0.63,0.63]
 # How far from the origin is each layer
 detector.RadialPosition  = [1.0,1.5,2.0,2.5]
 detector.Generate()
@@ -81,6 +85,7 @@ for i,track in enumerate(tracks.Tracks):
 # Save to a file
 if SavePatterns:
     PatternEncoder.SavePatterns("patterns")
+    tracks.SavePatterns("patternsfull")
 
 # Plot the frequencies of all the patterns found in the tracks
 fighist,axhist = plt.subplots(1,1,figsize=(30,30))
