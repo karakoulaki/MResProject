@@ -14,14 +14,14 @@ modules=modules.ModuleNumber()
 # Initialise the detector
 detector = DetectorGenerator.DetectorGenerator()
 # How many layers in the detector
-detector.NumberOfLayers  = modules.changedetector()[2] 
+detector.NumberOfLayers  = modules.changedetector()[0] 
 # How many modules in each layer 
-detector.NumberOfModules = modules.changedetector()[0]
+detector.NumberOfModules = modules.changedetector()[1]
 # How long is each module in each layer of the detector, no overlaps so module length < 2/3 where 3 is from number of modules 
 # in each layer and 2 from the fact the detector spans -1 to 1
-detector.ModuleLength    = modules.changedetector()[1]
+detector.ModuleLength    = modules.changedetector()[2]
 # How far from the origin is each layer
-detector.RadialPosition  = [1.0,1.5,2.0,2.5]
+detector.RadialPosition  = modules.changedetector()[3]
 detector.Generate()
 
 # Load pattern bank
