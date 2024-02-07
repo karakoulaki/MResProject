@@ -7,6 +7,7 @@ import numpy as np
 import bitstring
 import sys
 import matplotlib as mpl
+import modules
 mpl.use('Agg')
 
 from math import *
@@ -17,7 +18,7 @@ axxy.set_xlim(-1.5,1.5)
 axxy.set_ylim(-0.5,3.5)
 
 plot = True
-
+modules=modules.ModuleNumber()
 def QtrackWrapper(bits):
     qbits = bits
     translatedBits = bitstring.Bits(bin='0b'+str(qbits))
@@ -26,12 +27,12 @@ def QtrackWrapper(bits):
 # Initialise the detector
 detector = DetectorGenerator.DetectorGenerator()
 # How many layers in the detector
-detector.NumberOfLayers  = 4  
+detector.NumberOfLayers  = modules.changedetector()[2]  
 # How many modules in each layer 
-detector.NumberOfModules = [3,3,3,3]
+detector.NumberOfModules = modules.changedetector()[0]
 # How long is each module in each layer of the detector, no overlaps so module length < 2/3 where 3 is from number of modules 
 # in each layer and 2 from the fact the detector spans -1 to 1
-detector.ModuleLength    = [0.63,0.63,0.63,0.63]
+detector.ModuleLength    = modules.changedetector()[1]
 # How far from the origin is each layer
 detector.RadialPosition  = [1.0,1.5,2.0,2.5]
 detector.Generate()
