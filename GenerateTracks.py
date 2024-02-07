@@ -26,16 +26,16 @@ modules=modules.ModuleNumber()
 # Initialise the detector
 detector = DetectorGenerator.DetectorGenerator()
 # How many layers in the detector
-detector.NumberOfLayers  = modules.changedetector()[2]
+detector.NumberOfLayers  = modules.changedetector()[0]
 # How many modules in each layer 
-detector.NumberOfModules = modules.changedetector()[0]
+detector.NumberOfModules = modules.changedetector()[1]
 #[3,3,3,3]
 # How long is each module in each layer of the detector, no overlaps so module length < 2/3 where 3 is from number of modules 
 # in each layer and 2 from the fact the detector spans -1 to 1
-detector.ModuleLength    = modules.changedetector()[1]
+detector.ModuleLength    = modules.changedetector()[2]
 #[0.63,0.63,0.63,0.63]
 # How far from the origin is each layer
-detector.RadialPosition  = [1.0,1.5,2.0,2.5]
+detector.RadialPosition  = modules.changedetector()[3]
 detector.Generate()
 
 # Generate tracks, ntracks in each event with nevents
@@ -55,7 +55,7 @@ tracks.Generate()
 # Generate hits by checking if a track generated above crosses a module in the detector 
 hits = HitGenerator.HitCoordinates()
 # Minimum number of modules for each track to be kept, this equates to one hit in each layer for this example
-hits.MinimumHits = 4
+hits.MinimumHits = modules.changedetector()[0]
 tracks.Tracks = hits.Generate(detector.Modules,tracks.Tracks)
 if nevents*ntracks <= 100:
     # Plot detector
@@ -85,7 +85,7 @@ for i,track in enumerate(tracks.Tracks):
 # Save to a file
 if SavePatterns:
     PatternEncoder.SavePatterns("patterns")
-    tracks.SavePatterns("patternsfull")
+    tracks.SavePatterns("alltracks")
 
 # Plot the frequencies of all the patterns found in the tracks
 fighist,axhist = plt.subplots(1,1,figsize=(30,30))
