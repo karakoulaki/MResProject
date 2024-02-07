@@ -25,20 +25,21 @@ class TrackGenerator:
                 if self.constantPt:
                     Curvature = self.Curvature_Range[0]
                     Sign = 1
-                    track2 = {"EventNumber" : EventNumber,
+                    alltracks = {"EventNumber" : EventNumber,
                          "TrackNumber" : i,
                          "Curvature" : Curvature,
                          "Charge" : Sign}
-                    self.allTracks.append(track2)
+                    self.allTracks.append(alltracks)
                 else:
                     Curvature = np.random.uniform(self.Curvature_Range[0]-self.Curvature_Range[1],self.Curvature_Range[0]+self.Curvature_Range[1])
                     Sign = np.random.choice([-1,1])
                     Curvature = Curvature*Sign
-                    track2 = {"EventNumber" : EventNumber,
+                    alltracks = {"EventNumber" : EventNumber,
                          "TrackNumber" : i,
                          "Curvature" : Curvature,
                          "Charge" : Sign}
-                    self.allTracks.append(track2)
+                    self.allTracks.append(alltracks)
+                    
                 Phi      = np.random.uniform(self.phi0_Range[0]-self.phi0_Range[1],self.phi0_Range[0]+self.phi0_Range[1])
 
                 track = {"EventNumber" : EventNumber,
@@ -47,6 +48,7 @@ class TrackGenerator:
                          "Charge" : Sign,
                         "Phi" : Phi}
                 self.Tracks.append(track)
+    
     def SavePatterns(self,filename):
         with open(str(filename)+'.pickle', 'wb') as handle:
             pickle.dump(self.allTracks, handle, protocol=pickle.HIGHEST_PROTOCOL)
