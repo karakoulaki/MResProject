@@ -85,6 +85,8 @@ for i,track in enumerate(tracks.Tracks):
 # Save to a file
 if SavePatterns:
     PatternEncoder.SavePatterns("patterns")
+
+if SavePatterns:
     tracks.SavePatterns("alltracks")
 
 # Plot the frequencies of all the patterns found in the tracks
