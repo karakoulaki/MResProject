@@ -2,7 +2,7 @@ class ModuleNumber:
 
     def __init__(self):
         self.nlayers = 4 #number of layers 
-        self.n = 1 #number to multiply the inital number of modules in each layer, and the length of each module is going to be divided with it
+        self.n = 2 #number to multiply the inital number of modules in each layer, and the length of each module is going to be divided with it
         self.distradialposition = 0.5 # distance between the layers 
         self.firstposition = 1.0 #radial position of the first layer
     
