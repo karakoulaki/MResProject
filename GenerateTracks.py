@@ -45,10 +45,10 @@ tracks.NumberOfEventsToGenerate = nevents
 # For reproducibility
 tracks.RandomSeed               = 3
 # Tracks generated from a uniform distribution in phi from phi0_range[0] - phi std = phi_range[1] to phi0_range[0] + phi std = phi_range[1]
-tracks.phi0_Range               = [pi/2,pi/2]
+tracks.phi0_Range               = modules.changedetector()[4]
 # Tracks generated from a normal distribution in curvature mean = Curvature_range[0] and Curvature std = Curvature_range[1]
 # Curvature is 1/pT with some factors for magnetic field, in this dummy example see curvature as 1/pT
-tracks.Curvature_Range          = [20,18] 
+tracks.Curvature_Range          = modules.changedetector()[5]
 tracks.constantPt               = False
 tracks.Generate()
 
