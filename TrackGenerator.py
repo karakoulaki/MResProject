@@ -8,8 +8,8 @@ class TrackGenerator:
         self.NumberOfTracksToGenerate = 20
         self.NumberOfEventsToGenerate = 100
         
-        self.phi0_Range               = [0.,2*pi]
-        self.Curvature_Range          = [10.0,500.0] # curvature radius range from 2.5cm to 1000 m
+        self.phi0_Range               = [] #0,2pi
+        self.Curvature_Range          = [] # curvature radius range from 2.5cm to 1000 m
         self.constantPt               = False
 
         self.Tracks = []
