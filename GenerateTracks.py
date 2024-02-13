@@ -89,6 +89,9 @@ if SavePatterns:
 if SavePatterns:
     tracks.SavePatterns("alltracks")
 
+if SavePatterns:
+    detector.SavePatterns("moduleposition")
+
 # Plot the frequencies of all the patterns found in the tracks
 fighist,axhist = plt.subplots(1,1,figsize=(30,30))
 PGraph = DetectorTrackGraphMatplotlib.PatternGraph(fighist,axhist)
