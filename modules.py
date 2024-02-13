@@ -8,8 +8,8 @@ class ModuleNumber:
         self.n = 2 #number to multiply the inital number of modules in each layer, and the length of each module is going to be divided with it
         self.distradialposition = 0.5 # distance between the layers 
         self.firstposition = 1.0 #radial position of the first layer
-        self.phi0_range = [np.pi/2,np.pi/100] 
-        self.curvature_range = [18,1] #using random.normal mean=18 sd=1
+        self.phi0_range = [np.pi/2,np.pi/2] 
+        self.curvature_range = [16,1] #using random.normal mean=18 sd=1
         
     def changedetector(self):
         modules=[3,3,3,3]
@@ -33,4 +33,4 @@ class ModuleNumber:
             length.append(self.initiallength)
         """    
         return self.nlayers, modules, length,  radialposition, self.phi0_range, self.curvature_range
-        
+
