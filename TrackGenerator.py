@@ -40,7 +40,7 @@ class TrackGenerator:
                          "Charge" : Sign}
                     self.allTracks.append(alltracks)
                     
-                Phi      = np.random.uniform(self.phi0_Range[0]-self.phi0_Range[1],self.phi0_Range[0]+self.phi0_Range[1])
+                Phi      = np.random.normal(self.phi0_Range[0],self.phi0_Range[1])
 
                 track = {"EventNumber" : EventNumber,
                          "TrackNumber" : i,
