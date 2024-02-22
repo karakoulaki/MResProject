@@ -111,23 +111,13 @@ class PatternEncoder:
         writer1 = csv.writer(f1)
         writer2 = csv.writer(f2)
 
-        writer1.writerow(["ID","Hit Map","position","cmin-","cmax-","ctot-","phimin-","phimax-","phitot-","cmin+","cmax+","ctot+","phimin+","phimax+","phitot+","frequency"])
+        writer1.writerow(["ID","Hit Map","cmin-","cmax-","ctot-","phimin-","phimax-","phitot-","cmin+","cmax+","ctot+","phimin+","phimax+","phitot+","frequency"])
         
         for pattern in self.patterns:
             patternstring = (bitstring.Bits(int=pattern,length=self.nelements).bin)
             # write a row to the csv file
-            position=[]
-            for i in range(0,11,3):
-                if patternstring[i:i+2]=='100':
-                    position.append(detector.Generate2()[0])
-                    
-                if patternstring[i:i+2]=='010':
-                    position.append(detector.Generate2()[1])
-                    
-                if patternstring[i:i+2]=='001':
-                    position.append(detector.Generate2()[2])
                 
-            writer1.writerow([pattern,str(patternstring),position,
+            writer1.writerow([pattern,str(patternstring),
                               self.patterns[pattern]["cmin-"],
                               self.patterns[pattern]["cmax-"],
                               self.patterns[pattern]["ctot-"],
