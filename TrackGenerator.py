@@ -1,7 +1,10 @@
 from math import *
 import numpy as np
 import pickle
+import modules
 
+
+modules=modules.ModuleNumber()
 class TrackGenerator:
     def __init__(self):
         self.RandomSeed               = 0
@@ -31,7 +34,7 @@ class TrackGenerator:
                          "Charge" : Sign}
                     self.allTracks.append(alltracks)
                 else:
-                    Curvature = np.random.normal(self.Curvature_Range[0],self.Curvature_Range[1])
+                    Curvature =  np.random.uniform(self.Curvature_Range[0]-self.Curvature_Range[1],self.Curvature_Range[0]+self.Curvature_Range[1])
                     Sign = np.random.choice([-1,1])
                     Curvature = Curvature*Sign
                     alltracks = {"EventNumber" : EventNumber,
