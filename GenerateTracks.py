@@ -6,6 +6,11 @@ import DetectorTrackGraphMatplotlib
 import modules
 import sys
 import matplotlib as mpl
+import HitEncoder
+#import Separation
+#import TruthLevel
+#import FindingRanges
+#import FindingRanges2
 mpl.use('Agg')
 
 from math import *
@@ -16,13 +21,15 @@ axxy.set_xlim(-1.5,1.5)
 axxy.set_ylim(-0.5,3.5)
 
 # Set number of events and number of tracks per event to create the pattern bank, plotting of the tracks will only happen if 
-# nevents * ntracks < 100
+# nevents * ntracks < 100
 nevents = int(sys.argv[1])
 ntracks = int(sys.argv[2])
 # Do we want to save the pattern bank, only necessary when running many tracks
 SavePatterns = bool(sys.argv[3])
 
 modules=modules.ModuleNumber()
+#FindingRanges2 = FindingRanges2.FindingRanges() 
+
 # Initialise the detector
 detector = DetectorGenerator.DetectorGenerator()
 # How many layers in the detector
@@ -48,7 +55,7 @@ tracks.RandomSeed               = 3
 tracks.phi0_Range               = modules.changedetector()[4]
 # Tracks generated from a normal distribution in curvature mean = Curvature_range[0] and Curvature std = Curvature_range[1]
 # Curvature is 1/pT with some factors for magnetic field, in this dummy example see curvature as 1/pT
-tracks.Curvature_Range          = modules.changedetector()[5]
+tracks.Curvature_Range          = modules.changedetector()[5] # FindingRanges2.Generate()[1][0]
 tracks.constantPt               = False
 tracks.Generate()
 
@@ -76,21 +83,22 @@ if nevents*ntracks <= 100:
 
 # Initialise pattern encoder
 PatternEncoder = PatternEncoder.PatternEncoder(detector)
+HitEncoder = HitEncoder.HitEncoder(detector)
 # Iterate through the tracks to generate a pattern for each track
 # Save the track curvature and phi
 # If the track is already in the bank save the minimum and maximum curvature and phi
 # Of all the tracks with that bank and tally the frequency
 for i,track in enumerate(tracks.Tracks):
     PID = PatternEncoder.PatternID(hits.Hits[i],track,update=True)
+    PID = HitEncoder.HitID(hits.Hits[i],track,update=True)
 # Save to a file
 if SavePatterns:
     PatternEncoder.SavePatterns("patterns")
+    HitEncoder.SavePatterns("hits")
 
 if SavePatterns:
     tracks.SavePatterns("alltracks")
 
-if SavePatterns:
-    detector.SavePatterns("moduleposition")
 
 # Plot the frequencies of all the patterns found in the tracks
 fighist,axhist = plt.subplots(1,1,figsize=(30,30))
@@ -99,5 +107,21 @@ PGraph.plot(PatternEncoder)
 fighist.savefig("Frequencies.png")
 # This will print the pattern frequencies and pattern IDs, to see what an individual pattern
 # ID looks like run "python PlotID PID" where PID is the number you want to see 
+fighist,axhist = plt.subplots(1,1,figsize=(30,30))
+#SGraph = Separation.Separation(fighist,axhist)
+#SGraph.plot()
 
 
+
+#if modules.changedetector()[6]==0:
+#    fighist,axhist = plt.subplots(1,1,figsize=(10,10))
+#    FGraph = FindingRanges.FindingRanges(fighist,axhist)
+#    FGraph.plot()
+#if SavePatterns:
+#        FindingRanges2=FindingRanges2.FindingRanges()
+#        FindingRanges2.SavePatterns("Franges")
+
+
+#if modules.changedetector()[6]==1:
+ #   TGraph = TruthLevel.Separation(fighist,axhist)
+  #  TGraph.plot()
