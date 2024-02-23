@@ -20,19 +20,12 @@ class Separation:
         
         
         a=[17476,8738]
-        def set_value(row,str):
-            count=0
-            for i in a:
-                count+=1
-                if row['ID']==i:
-                    return f[0][count-1][f"{i}"][str]
-                else:
-                    return None
-
-        # Apply the function to create the new column
-        df['cmax'] = df.apply(set_value, axis=1,str="cmax")
-        df['cmin'] = df.apply(set_value, axis=1,str="cmin")
-        #not these ranges
+        for i in range(len(a)):
+            df.loc[df['ID']==a[i],'cmax']=f[0][i][f"{a[i]}"]['cmax']
+            df.loc[df['ID']==a[i],'cmin']=f[0][i][f"{a[i]}"]['cmin']
+        
+        
+        
         self.myAx.plot(df['cmax'],df['frequency'],"g.")  
         self.myAx.plot(df['cmin'],df['frequency'],"g.") 
         self.myFig.savefig("frequency_curvature.png")
