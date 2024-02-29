@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
-import pandas as pd
+import pandas as pd#
 import FindingRanges2
+import numpy as np
 
 F = FindingRanges2.FindingRanges()
 f = F.Generate()
@@ -19,13 +20,16 @@ class Separation:
         #df['cmax'] = [f[0][0]]
         
         
-        a=[17476,8738]
+        a=f[2]
         for i in range(len(a)):
             df.loc[df['ID']==a[i],'cmax']=f[0][i][f"{a[i]}"]['cmax']
             df.loc[df['ID']==a[i],'cmin']=f[0][i][f"{a[i]}"]['cmin']
         
-        
-        
-        self.myAx.plot(df['cmax'],df['frequency'],"g.")  
-        self.myAx.plot(df['cmin'],df['frequency'],"g.") 
+
+            self.myAx.bar(f[1][i][0],df['frequency'][df['ID']==a[i]],width=df['cmax'][df['ID']==a[i]]-df['cmin'][df['ID']==a[i]])
+        self.myAx.set_title("Curvature Range")
+        self.myAx.set_xlabel("Curvature Ranges")
+        self.myAx.set_ylabel("Frequency")
         self.myFig.savefig("frequency_curvature.png")
+        
+       
