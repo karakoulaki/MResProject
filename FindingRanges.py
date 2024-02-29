@@ -5,22 +5,37 @@ import pickle
 
 class FindingRanges:
 
-    def __init__(self,fig,ax):
-        self.myFig=fig
-        self.myAx=ax
+    
+    def __init__(self):
         self.ranges=[]
+      
     
                 
-    def plot(self):
+    def Generate(self):
         file_path = "patternsfull.csv"
         df = pd.read_csv(file_path)
         df = pd.DataFrame(df)
         
+        a=1170
+    
+        cmax =  np.max((df['cmin+'][df['ID']==a],-df['cmax-'][df['ID']==a]))
+        cmin =  np.min((df['cmax+'][df['ID']==a],-df['cmin-'][df['ID']==a]))
+      
+        mean = (cmax+cmin)/2 
+        sigma = (0.997*(cmax-cmin)/2)/3
+           
+        self.ranges.append(cmin)
+        self.ranges.append(cmax)
+        import csv
+        f = open('ranges.csv','w')
+        writer = csv.writer(f)
         
+        writer.writerow(["cmin","cmax","mean","standard deviation"])
+        writer.writerow([cmin,cmax,mean,sigma])
         
-        self.myAx.plot(df['cmax+'][df['ID']==1170] ,df['ID'][df['ID']==1170],"r.")  
-        self.myAx.plot(df['cmax-'][df['ID']==1170] ,df['ID'][df['ID']==1170],"r.") 
-        self.myAx.plot(df['cmin+'][df['ID']==1170] ,df['ID'][df['ID']==1170],"g.") 
-        self.myAx.plot(df['cmin-'][df['ID']==1170] ,df['ID'][df['ID']==1170],"g.") 
-        self.myFig.savefig("Ranges.png")
+        f.close()
+    
+    
+        
+    
     
