@@ -18,16 +18,29 @@ class FindingRanges:
         self.mean_sd=[]
                 
     def Generate(self):
-        file_path = "patternsfull.csv"
+        file_path = "patternsfull.csv" #hitsfull.csv to work with curvature ranges of modules instead of tracks
         df = pd.read_csv(file_path)
         df = pd.DataFrame(df)
         #ranges=[]
         a=[17476,8738]
+        #17476,8738
         for i in a:
-            cmax = np.max((df['cmin+'][df['ID']==i],-df['cmax-'][df['ID']==i]))
+            
+            cmax =  np.max((df['cmin+'][df['ID']==i],-df['cmax-'][df['ID']==i]))
             cmin =  np.min((df['cmax+'][df['ID']==i],-df['cmin-'][df['ID']==i]))
-            r={f"{i}":{"cmax": cmax,
-                    "cmin":cmin}}
+            
+            if cmax==0:
+                cmax=cmin
+                r={f"{i}":{"cmax": cmax,
+                        "cmin":cmin}}
+            if cmin==0:
+                cmin=cmax
+                r={f"{i}":{"cmax": cmax,
+                        "cmin":cmin}}
+            else:
+                r={f"{i}":{"cmax": cmax,
+                        "cmin":cmin}}
+            
             
             self.ranges.append(r)
             mean = (cmax+cmin)/2 
@@ -37,7 +50,7 @@ class FindingRanges:
             self.mean_sd.append([mean,sigma])
             
         #self.ranges.append(ranges)
-        return self.ranges, self.mean_sd
+        return self.ranges, self.mean_sd, a
     
         
         
