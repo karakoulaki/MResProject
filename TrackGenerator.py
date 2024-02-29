@@ -26,7 +26,7 @@ class TrackGenerator:
             for i in range(nTracks):
                 track = {}
                 if self.constantPt:
-                    Curvature = self.Curvature_Range[0]
+                    Curvature = (self.Curvature_Range[0]+self.Curvature_Range[1])/2
                     Sign = 1
                     alltracks = {"EventNumber" : EventNumber,
                          "TrackNumber" : i,
@@ -34,7 +34,9 @@ class TrackGenerator:
                          "Charge" : Sign}
                     self.allTracks.append(alltracks)
                 else:
-                    Curvature =  np.random.uniform(self.Curvature_Range[0]-self.Curvature_Range[1],self.Curvature_Range[0]+self.Curvature_Range[1])
+                    Curvature =  np.random.uniform(self.Curvature_Range[0],self.Curvature_Range[1]) #0,38
+                    #self.Curvature_Range[0],self.Curvature_Range[1]
+                    #self.Curvature_Range[0]-self.Curvature_Range[1],self.Curvature_Range[0]+self.Curvature_Range[1]
                     Sign = np.random.choice([-1,1])
                     Curvature = Curvature*Sign
                     alltracks = {"EventNumber" : EventNumber,
