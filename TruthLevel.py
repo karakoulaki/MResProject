@@ -27,10 +27,10 @@ class Separation:
 
         self.myAx.plot(cx,n,'g.-',label='positive particles')  
         self.myAx.plot(cx2,n2,'r.-',label='negative particles')
-        #self.myAx.xlabel('Curvature')
-        #self.myAx.ylabel('Bins')
-        #self.myAx.legend()
-        #self.myAx.title('Truth Level phi0=pi/2')
-        self.myFig.savefig("trial.png")
+        self.myAx.set_xlabel('Curvature')
+        self.myAx.set_ylabel('Bins')
+        self.myAx.set_title('Truth Level phi0=pi/2')
+        self.myAx.legend()
+        self.myFig.savefig("truthlevel.png")
         
       
