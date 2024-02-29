@@ -7,12 +7,14 @@ import modules
 import sys
 import matplotlib as mpl
 import HitEncoder
-#import Separation
-#import TruthLevel
-#import FindingRanges
-#import FindingRanges2
-mpl.use('Agg')
+import Separation
+import TruthLevel
+import FindingRanges2
+import plotinitialranges
+modules=modules.ModuleNumber()
 
+
+mpl.use('Agg')
 from math import *
 import matplotlib.pyplot as plt
 # Create Axes for plotting, x and y lims need to be larger than the detector, tracks are produced from 0,0 outwards
@@ -27,7 +29,7 @@ ntracks = int(sys.argv[2])
 # Do we want to save the pattern bank, only necessary when running many tracks
 SavePatterns = bool(sys.argv[3])
 
-modules=modules.ModuleNumber()
+
 #FindingRanges2 = FindingRanges2.FindingRanges() 
 
 # Initialise the detector
@@ -107,21 +109,22 @@ PGraph.plot(PatternEncoder)
 fighist.savefig("Frequencies.png")
 # This will print the pattern frequencies and pattern IDs, to see what an individual pattern
 # ID looks like run "python PlotID PID" where PID is the number you want to see 
-fighist,axhist = plt.subplots(1,1,figsize=(30,30))
-#SGraph = Separation.Separation(fighist,axhist)
-#SGraph.plot()
+fighist,axhist = plt.subplots(1,1,figsize=(15,15))
+SGraph = Separation.Separation(fighist,axhist)
+SGraph.plot()
 
 
 
-#if modules.changedetector()[6]==0:
-#    fighist,axhist = plt.subplots(1,1,figsize=(10,10))
-#    FGraph = FindingRanges.FindingRanges(fighist,axhist)
-#    FGraph.plot()
+fighist,axhist = plt.subplots(1,1,figsize=(10,10))
+FGraph = plotinitialranges.FindingRanges(fighist,axhist)
+FGraph.plot()
 #if SavePatterns:
-#        FindingRanges2=FindingRanges2.FindingRanges()
-#        FindingRanges2.SavePatterns("Franges")
+#if modules.changedetector()[1][0]==3:
+#import FindingRanges
+#FindingRanges=FindingRanges.FindingRanges()
+#FindingRanges.Generate()
 
 
-#if modules.changedetector()[6]==1:
- #   TGraph = TruthLevel.Separation(fighist,axhist)
-  #  TGraph.plot()
+if modules.changedetector()[6]==1:
+    TGraph = TruthLevel.Separation(fighist,axhist)
+    TGraph.plot()
