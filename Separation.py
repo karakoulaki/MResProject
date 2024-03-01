@@ -20,13 +20,13 @@ class Separation:
         #df['cmax'] = [f[0][0]]
         
         
-        a=f[2]
+        a=f[1]
         for i in range(len(a)):
             df.loc[df['ID']==a[i],'cmax']=f[0][i][f"{a[i]}"]['cmax']
             df.loc[df['ID']==a[i],'cmin']=f[0][i][f"{a[i]}"]['cmin']
         
-
-            self.myAx.bar(f[1][i][0],df['frequency'][df['ID']==a[i]],width=df['cmax'][df['ID']==a[i]]-df['cmin'][df['ID']==a[i]])
+            mean = (df['cmax'][df['ID']==a[i]]+df['cmin'][df['ID']==a[i]])/2
+            self.myAx.bar(mean,df['frequency'][df['ID']==a[i]],width=df['cmax'][df['ID']==a[i]]-df['cmin'][df['ID']==a[i]])
         self.myAx.set_title("Curvature Range")
         self.myAx.set_xlabel("Curvature Ranges")
         self.myAx.set_ylabel("Frequency")
