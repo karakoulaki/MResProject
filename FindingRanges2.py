@@ -15,7 +15,6 @@ class FindingRanges:
     def __init__(self):
         
         self.ranges=[]  
-        self.mean_sd=[]
                 
     def Generate(self):
         file_path = "patternsfull.csv" #hitsfull.csv to work with curvature ranges of modules instead of tracks
@@ -43,18 +42,9 @@ class FindingRanges:
             
             
             self.ranges.append(r)
-            mean = (cmax+cmin)/2 
-            sigma = (0.997*(cmax-cmin)/2)/3
-            #m={f"{i}":{"mean": mean,
-             #       "sigma":sigma}}
-            self.mean_sd.append([mean,sigma])
+           
             
         #self.ranges.append(ranges)
-        return self.ranges, self.mean_sd, a
+        return self.ranges, a
     
         
-        
-        
-    def SavePatterns(self,filename):
-        with open(str(filename)+'.pickle', 'wb') as handle:
-           pickle.dump(self.ranges, handle, protocol=pickle.HIGHEST_PROTOCOL)
