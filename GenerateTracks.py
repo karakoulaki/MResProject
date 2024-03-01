@@ -1,18 +1,18 @@
 import DetectorGenerator 
-import TrackGenerator
+#import TrackGenerator
 import HitGenerator
 import PatternEncoder
 import DetectorTrackGraphMatplotlib
 import modules
 import sys
+import pandas as pd
 import matplotlib as mpl
 import HitEncoder
-import Separation
-import TruthLevel
-import FindingRanges2
 import plotinitialranges
 modules=modules.ModuleNumber()
 
+file_path = 'alltracks.pickle'
+df_tracks = pd.read_pickle(file_path)
 
 mpl.use('Agg')
 from math import *
@@ -47,25 +47,13 @@ detector.ModuleLength    = modules.changedetector()[2]
 detector.RadialPosition  = modules.changedetector()[3]
 detector.Generate()
 
-# Generate tracks, ntracks in each event with nevents
-tracks = TrackGenerator.TrackGenerator()
-tracks.NumberOfTracksToGenerate = ntracks
-tracks.NumberOfEventsToGenerate = nevents
-# For reproducibility
-tracks.RandomSeed               = 3
-# Tracks generated from a uniform distribution in phi from phi0_range[0] - phi std = phi_range[1] to phi0_range[0] + phi std = phi_range[1]
-tracks.phi0_Range               = modules.changedetector()[4]
-# Tracks generated from a normal distribution in curvature mean = Curvature_range[0] and Curvature std = Curvature_range[1]
-# Curvature is 1/pT with some factors for magnetic field, in this dummy example see curvature as 1/pT
-tracks.Curvature_Range          = modules.changedetector()[5] # FindingRanges2.Generate()[1][0]
-tracks.constantPt               = False
-tracks.Generate()
 
 # Generate hits by checking if a track generated above crosses a module in the detector 
 hits = HitGenerator.HitCoordinates()
 # Minimum number of modules for each track to be kept, this equates to one hit in each layer for this example
 hits.MinimumHits = modules.changedetector()[0]
-tracks.Tracks = hits.Generate(detector.Modules,tracks.Tracks)
+tracks = hits.Generate(detector.Modules,df_tracks)
+#tracks.Tracks = hits.Generate(detector.Modules,tracks.Tracks)
 if nevents*ntracks <= 100:
     # Plot detector
     DGraph = DetectorTrackGraphMatplotlib.DetectorGraph(fig=figxy,ax=axxy)
@@ -90,16 +78,13 @@ HitEncoder = HitEncoder.HitEncoder(detector)
 # Save the track curvature and phi
 # If the track is already in the bank save the minimum and maximum curvature and phi
 # Of all the tracks with that bank and tally the frequency
-for i,track in enumerate(tracks.Tracks):
+for i,track in enumerate(tracks):
     PID = PatternEncoder.PatternID(hits.Hits[i],track,update=True)
     PID = HitEncoder.HitID(hits.Hits[i],track,update=True)
 # Save to a file
 if SavePatterns:
     PatternEncoder.SavePatterns("patterns")
     HitEncoder.SavePatterns("hits")
-
-if SavePatterns:
-    tracks.SavePatterns("alltracks")
 
 
 # Plot the frequencies of all the patterns found in the tracks
@@ -109,22 +94,12 @@ PGraph.plot(PatternEncoder)
 fighist.savefig("Frequencies.png")
 # This will print the pattern frequencies and pattern IDs, to see what an individual pattern
 # ID looks like run "python PlotID PID" where PID is the number you want to see 
-fighist,axhist = plt.subplots(1,1,figsize=(15,15))
-SGraph = Separation.Separation(fighist,axhist)
-SGraph.plot()
-
 
 
 fighist,axhist = plt.subplots(1,1,figsize=(10,10))
 FGraph = plotinitialranges.FindingRanges(fighist,axhist)
 FGraph.plot()
-#if SavePatterns:
-#if modules.changedetector()[1][0]==3:
-#import FindingRanges
-#FindingRanges=FindingRanges.FindingRanges()
-#FindingRanges.Generate()
 
 
-if modules.changedetector()[6]==1:
-    TGraph = TruthLevel.Separation(fighist,axhist)
-    TGraph.plot()
+
+    
