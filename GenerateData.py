@@ -57,7 +57,7 @@ tracks = TrackGenerator.TrackGenerator()
 tracks.NumberOfTracksToGenerate = ntracks
 tracks.NumberOfEventsToGenerate = nevents
 # For reproducibility
-tracks.RandomSeed               = 3
+tracks.RandomSeed               = 0
 # Tracks generated from a uniform distribution in phi from phi0_range[0] - phi std = phi_range[1] to phi0_range[0] + phi std = phi_range[1]
 tracks.phi0_Range               = [np.pi/2,np.pi/2]
 # Tracks generated from a normal distribution in curvature mean = Curvature_range[0] and Curvature std = Curvature_range[1]
