@@ -30,7 +30,7 @@ class FindingRanges:
             df.loc[df['ID']==a[i],'cmin']=f[0][i][f"{a[i]}"]['cmin']
     
             mean = (df['cmax'][df['ID']==a[i]]+df['cmin'][df['ID']==a[i]])/2
-            self.myAx.bar(mean,df['ID'][df['ID']==a[i]],width=df['cmax'][df['ID']==a[i]]-df['cmin'][df['ID']==a[i]])
+            self.myAx.bar(mean,df['ID'][df['ID']==a[i]],width=df['cmax'][df['ID']==a[i]]-df['cmin'][df['ID']==a[i]],label=f"{a[i]}")
         
         #self.myAx.plot(df['cmax+'][df['ID']==1170] ,df['ID'][df['ID']==a],"r.")  
         #self.myAx.plot(df['cmax-'][df['ID']==1170] ,df['ID'][df['ID']==a],"g.") 
@@ -39,4 +39,5 @@ class FindingRanges:
         self.myAx.set_title("Curvature Ranges")
         self.myAx.set_xlabel("Curvature Ranges")
         self.myAx.set_ylabel("ID")
+        self.myAx.legend()
         self.myFig.savefig("Ranges.png")
