@@ -7,7 +7,7 @@ Created on Fri Mar  1 14:44:13 2024
 """
 
 import DetectorGenerator 
-#import TrackGenerator
+
 import HitGenerator
 import PatternEncoder
 import DetectorTrackGraphMatplotlib
@@ -15,19 +15,34 @@ import modules
 import sys
 import pandas as pd
 import matplotlib as mpl
+import numpy as np
+import matplotlib.pyplot as plt
 import HitEncoder
 import Separation
-import TruthLevel
-#import FindingRanges2
-#import plotinitialranges
 modules=modules.ModuleNumber()
 
 file_path = 'alltracks_normal.pickle' #or alltracks_normal
 df_tracks = pd.read_pickle(file_path)
-
+df = pd.DataFrame(df_tracks)
+df_pos=df['Curvature'][df['Charge']==1] #12 modules
+df_neg=df['Curvature'][df['Charge']==-1]
+mean = np.mean(df_pos)
+mean2 = np.mean(df_neg)
+sd = np.std(df_pos)
+sd2 = np.std(df_neg)
+plt.figure(figsize=[10,10])
+plt.hist(df_neg,bins=10,density=True,color='r',label='negative particles')
+plt.hist(df_pos,bins=10,density=True,color='g',label='positive particles')
+plt.xlabel('Curvature')
+plt.ylabel('Bins')
+plt.annotate(f"mean={np.round(mean,2)},sigma={np.round(sd,2)}",(-40,0.04))
+plt.legend()
+plt.title('Truth Level phi0=pi/2')
+plt.savefig("normaldistributionplot")
+plt.close('all')
 mpl.use('Agg')
-from math import *
-import matplotlib.pyplot as plt
+
+
 # Create Axes for plotting, x and y lims need to be larger than the detector, tracks are produced from 0,0 outwards
 figxy,axxy = plt.subplots(1,1,figsize=(30,30))
 axxy.set_xlim(-1.5,1.5)
@@ -65,7 +80,7 @@ hits = HitGenerator.HitCoordinates()
 hits.MinimumHits = modules.changedetector()[0]
 tracks = hits.Generate(detector.Modules,df_tracks)
 #tracks.Tracks = hits.Generate(detector.Modules,tracks.Tracks)
-if nevents*ntracks <= 100000:
+if nevents*ntracks <= 100:
     # Plot detector
     DGraph = DetectorTrackGraphMatplotlib.DetectorGraph(fig=figxy,ax=axxy)
     DGraph.plot(detector.Modules)
@@ -95,7 +110,8 @@ for i,track in enumerate(tracks):
 # Save to a file
 if SavePatterns:
     PatternEncoder.SavePatterns("patterns")
-    HitEncoder.SavePatterns("hits")
+#
+#    HitEncoder.SavePatterns("hits")
 
 
 
@@ -111,16 +127,3 @@ SGraph = Separation.Separation(fighist,axhist)
 SGraph.plot()
 
 
-
-#fighist,axhist = plt.subplots(1,1,figsize=(10,10))
-#FGraph = plotinitialranges.FindingRanges(fighist,axhist)
-#FGraph.plot()
-#if SavePatterns:
-#if modules.changedetector()[1][0]==3:
-#import FindingRanges
-#FindingRanges=FindingRanges.FindingRanges()
-#FindingRanges.Generate()
-#fighist,axhist = plt.subplots(1,1,figsize=(10,10))
-
-#TGraph = TruthLevel.Separation(fighist,axhist)
-#TGraph.plot()
