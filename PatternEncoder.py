@@ -33,10 +33,10 @@ class PatternEncoder:
         if update:
             try: 
                 if track["Charge"] == 1:                   
-                    if (track["Phi"] <= self.patterns[PID]["phimin+"]) or (self.patterns[PID]["phimin+"] == 0): #added =
+                    if (track["Curvature"] < self.patterns[PID]["cmin+"]) or (self.patterns[PID]["cmin+"] == 0): #added =
                         self.patterns[PID]["phimin+"] = track["Phi"]
                         self.patterns[PID]["cmin+"] = track["Curvature"]
-                    if (track["Phi"] > self.patterns[PID]["phimax+"]) or (self.patterns[PID]["phimax+"] == 0):
+                    if (track["Cruvature"] >self.patterns[PID]["cmax+"]) or (self.patterns[PID]["cmax+"] == 0):
                         self.patterns[PID]["phimax+"] = track["Phi"]
                         self.patterns[PID]["cmax+"] = track["Curvature"]
 
@@ -44,10 +44,10 @@ class PatternEncoder:
                     self.patterns[PID]["phitot+"] = self.patterns[PID]["phitot+"] + track["Phi"]
 
                 else:                   
-                    if (track["Phi"] <= self.patterns[PID]["phimin-"]) or (self.patterns[PID]["phimin-"] == 0): #added  =
+                    if (track["Curvature"] < self.patterns[PID]["cmin-"]) or (self.patterns[PID]["cmin-"] == 0): #added  =
                         self.patterns[PID]["phimin-"] = track["Phi"]
                         self.patterns[PID]["cmin-"] = track["Curvature"]
-                    if (track["Phi"] > self.patterns[PID]["phimax-"]) or (self.patterns[PID]["phimax-"] == 0):
+                    if (track["Curvature"] > self.patterns[PID]["cmax-"]) or (self.patterns[PID]["cmax-"] == 0):
                         self.patterns[PID]["phimax-"] = track["Phi"]
                         self.patterns[PID]["cmax-"] = track["Curvature"]
 
