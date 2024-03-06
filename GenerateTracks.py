@@ -8,15 +8,29 @@ import sys
 import pandas as pd
 import matplotlib as mpl
 import HitEncoder
-import plotinitialranges
+import plottinginitialranges
+import matplotlib.pyplot as plt
 modules=modules.ModuleNumber()
 
 file_path = 'alltracks.pickle'
 df_tracks = pd.read_pickle(file_path)
+df = pd.DataFrame(df_tracks)
+df_pos=df['Curvature'][df['Charge']==1] #12 modules
+df_neg=df['Curvature'][df['Charge']==-1]
+plt.figure(figsize=[10,10])
+plt.hist(df_neg,bins=10,density=True,color='r',label='negative particles')
+plt.hist(df_pos,bins=10,density=True,color='g',label='positive particles')
+plt.xlabel('Curvature')
+plt.ylabel('Bins')
+plt.legend()
+plt.title('Truth Level phi0=pi/2')
+plt.savefig("distributionplot")
+plt.close("all")
+
 
 mpl.use('Agg')
-from math import *
-import matplotlib.pyplot as plt
+
+
 # Create Axes for plotting, x and y lims need to be larger than the detector, tracks are produced from 0,0 outwards
 figxy,axxy = plt.subplots(1,1,figsize=(30,30))
 axxy.set_xlim(-1.5,1.5)
@@ -97,7 +111,7 @@ fighist.savefig("Frequencies.png")
 
 
 fighist,axhist = plt.subplots(1,1,figsize=(10,10))
-FGraph = plotinitialranges.FindingRanges(fighist,axhist)
+FGraph = plottinginitialranges.FindingRanges(fighist,axhist)
 FGraph.plot()
 
 
