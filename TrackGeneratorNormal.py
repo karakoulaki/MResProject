@@ -46,7 +46,7 @@ class TrackGenerator:
                     Curvature =  np.random.normal(self.Curvature_Range[0],self.Curvature_Range[1]) #0,38
                     Sign = np.random.choice([-1,1])
                     Curvature = Curvature*Sign
-                    Phi      = np.random.uniform(self.phi0_Range[0],self.phi0_Range[1])
+                    Phi      = self.phi0_Range[0]
                     alltracks = {"EventNumber" : EventNumber,
                          "TrackNumber" : i,
                          "Curvature" : Curvature,
@@ -54,7 +54,7 @@ class TrackGenerator:
                          "Phi": Phi}
                     self.allTracks.append(alltracks)
                     
-                Phi      = np.random.uniform(self.phi0_Range[0],self.phi0_Range[1])
+                Phi      = self.phi0_Range[0]
 
                 track = {"EventNumber" : EventNumber,
                          "TrackNumber" : i,
