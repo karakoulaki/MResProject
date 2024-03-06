@@ -18,8 +18,19 @@ class FindingRanges:
         
         a=1170
     
-        cmax =  np.max((df['cmin+'][df['ID']==a],-df['cmax-'][df['ID']==a]))
-        cmin =  np.min((df['cmax+'][df['ID']==a],-df['cmin-'][df['ID']==a]))
+        
+        
+        
+        if df.loc[df['ID'] == a, 'cmax-'].iloc[0]==0 and df.loc[df['ID'] == a, 'cmin-'].iloc[0]==0:
+            cmax = np.max((df['cmin+'][df['ID']==a],df['cmax+'][df['ID']==a]))
+            cmin = np.min((df['cmin+'][df['ID']==a],df['cmax+'][df['ID']==a]))
+           
+        if df.loc[df['ID'] == a, 'cmax+'].iloc[0]==0 and df.loc[df['ID'] == a, 'cmin+'].iloc[0]==0:
+            cmax = np.max((df['cmin-'][df['ID']==a],df['cmax-'][df['ID']==a]))
+            cmin = np.min((df['cmin-'][df['ID']==a],df['cmax-'][df['ID']==a]))
+        else:
+            cmax =  np.max((df['cmin+'][df['ID']==a],-df['cmax-'][df['ID']==a]))
+            cmin =  np.min((df['cmax+'][df['ID']==a],-df['cmin-'][df['ID']==a]))
       
         mean = (cmax+cmin)/2 
         sigma = (0.997*(cmax-cmin)/2)/3
