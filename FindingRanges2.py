@@ -11,7 +11,6 @@ import numpy as np
 import pickle
 
 class FindingRanges:
-
     def __init__(self):
         
         self.ranges=[]  
@@ -21,19 +20,21 @@ class FindingRanges:
         df = pd.read_csv(file_path)
         df = pd.DataFrame(df)
         #ranges=[]
-        a=[17476,8738]
-        #17476,8738
+        a=[17476,8738,8740,8772,9284]
+        #17476,8738,8740,8772,9284
         for i in a:
             
             cmax =  np.max((df['cmin+'][df['ID']==i],-df['cmax-'][df['ID']==i]))
             cmin =  np.min((df['cmax+'][df['ID']==i],-df['cmin-'][df['ID']==i]))
             
-            if cmax==0:
-                cmax=cmin
+            if df.loc[df['ID'] == i, 'cmax-'].iloc[0]==0 and df.loc[df['ID'] == i, 'cmin-'].iloc[0]==0:
+                cmax = np.max((df['cmin+'][df['ID']==i],df['cmax+'][df['ID']==i]))
+                cmin = np.min((df['cmin+'][df['ID']==i],df['cmax+'][df['ID']==i]))
                 r={f"{i}":{"cmax": cmax,
                         "cmin":cmin}}
-            if cmin==0:
-                cmin=cmax
+            if df.loc[df['ID'] == i, 'cmax+'].iloc[0]==0 and df.loc[df['ID'] == i, 'cmin+'].iloc[0]==0:
+                cmax = np.max((df['cmin-'][df['ID']==i],df['cmax-'][df['ID']==i]))
+                cmin = np.min((df['cmin-'][df['ID']==i],df['cmax-'][df['ID']==i]))
                 r={f"{i}":{"cmax": cmax,
                         "cmin":cmin}}
             else:
