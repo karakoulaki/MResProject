@@ -9,7 +9,7 @@ Created on Fri Mar  1 14:44:13 2024
 import DetectorGenerator 
 
 import HitGenerator
-import PatternEncoder
+import PatternEncodernormal
 import DetectorTrackGraphMatplotlib
 import modules
 import sys
@@ -18,7 +18,7 @@ import matplotlib as mpl
 import numpy as np
 import matplotlib.pyplot as plt
 import HitEncoder
-import Separation
+
 modules=modules.ModuleNumber()
 
 file_path = 'alltracks_normal.pickle' #or alltracks_normal
@@ -71,6 +71,9 @@ detector.ModuleLength    = modules.changedetector()[2]
 #[0.63,0.63,0.63,0.63]
 # How far from the origin is each layer
 detector.RadialPosition  = modules.changedetector()[3]
+
+
+detector.xrange = modules.changedetector()[6]
 detector.Generate()
 
 
@@ -98,7 +101,7 @@ if nevents*ntracks <= 100:
     figxy.savefig("Tracks.png")
 
 # Initialise pattern encoder
-PatternEncoder = PatternEncoder.PatternEncoder(detector)
+PatternEncoder = PatternEncodernormal.PatternEncoder(detector)
 HitEncoder = HitEncoder.HitEncoder(detector)
 # Iterate through the tracks to generate a pattern for each track
 # Save the track curvature and phi
@@ -109,7 +112,7 @@ for i,track in enumerate(tracks):
     PID = HitEncoder.HitID(hits.Hits[i],track,update=True)
 # Save to a file
 if SavePatterns:
-    PatternEncoder.SavePatterns("patterns")
+    PatternEncoder.SavePatterns("patternsnormal")
 #
 #    HitEncoder.SavePatterns("hits")
 
@@ -122,6 +125,7 @@ PGraph.plot(PatternEncoder)
 fighist.savefig("Frequencies.png")
 # This will print the pattern frequencies and pattern IDs, to see what an individual pattern
 # ID looks like run "python PlotID PID" where PID is the number you want to see 
+import Separation
 fighist,axhist = plt.subplots(1,1,figsize=(15,15))
 SGraph = Separation.Separation(fighist,axhist)
 SGraph.plot()
