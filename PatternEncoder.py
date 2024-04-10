@@ -28,35 +28,64 @@ class PatternEncoder:
             layerlist = []
             for module in range(self.nmodules[layer]):
                 layerlist.append(bitlist[layer*self.nmodules[layer]+module])
+                
+                
             matrix.append(layerlist)
+      
 
         if update:
             try: 
-                if track["Charge"] == 1:                   
-                    if (track["Curvature"] < self.patterns[PID]["cmin+"]) or (self.patterns[PID]["cmin+"] == 0): #added =
+               from csv import writer
+               import os
+               titles = ["ID","Matrix","Curvature", "Phi"]
+
+               filename = "tracksfull1000.csv"
+               
+               if not os.path.exists(filename) or os.stat(filename).st_size == 0:
+                   with open(filename, "a") as f3:
+                       writer3 = writer(f3)
+        
+                       writer3.writerow(titles)
+
+               with open(filename, "a") as f3:
+                   writer3 = writer(f3)
+                   matrix2 = np.array(matrix)
+
+
+                   flattened_matrix = matrix2.flatten()
+
+
+                   binary_string = ''.join(bitstring.Bits(uint=x, length=1).bin for x in flattened_matrix)
+                   ID = int(binary_string, 2)
+   
+                   writer3.writerow([ID, matrix,track["Curvature"], track["Phi"]])
+               if track["Charge"] == 1:                   
+                    if (track["Phi"] <= self.patterns[PID]["phimin+"]) or (self.patterns[PID]["phimin+"] == 0): #added =
                         self.patterns[PID]["phimin+"] = track["Phi"]
                         self.patterns[PID]["cmin+"] = track["Curvature"]
-                    if (track["Cruvature"] >self.patterns[PID]["cmax+"]) or (self.patterns[PID]["cmax+"] == 0):
+                    if (track["Phi"] > self.patterns[PID]["phimax+"]) or (self.patterns[PID]["phimax+"] == 0):
                         self.patterns[PID]["phimax+"] = track["Phi"]
                         self.patterns[PID]["cmax+"] = track["Curvature"]
 
                     self.patterns[PID]["ctot+"] = self.patterns[PID]["ctot+"] + abs(track["Curvature"]) 
                     self.patterns[PID]["phitot+"] = self.patterns[PID]["phitot+"] + track["Phi"]
 
-                else:                   
-                    if (track["Curvature"] < self.patterns[PID]["cmin-"]) or (self.patterns[PID]["cmin-"] == 0): #added  =
+               else:                   
+                    if (track["Phi"] <= self.patterns[PID]["phimin-"]) or (self.patterns[PID]["phimin-"] == 0): #added  =
                         self.patterns[PID]["phimin-"] = track["Phi"]
                         self.patterns[PID]["cmin-"] = track["Curvature"]
-                    if (track["Curvature"] > self.patterns[PID]["cmax-"]) or (self.patterns[PID]["cmax-"] == 0):
+                    if (track["Phi"] > self.patterns[PID]["phimax-"]) or (self.patterns[PID]["phimax-"] == 0):
                         self.patterns[PID]["phimax-"] = track["Phi"]
                         self.patterns[PID]["cmax-"] = track["Curvature"]
 
                     self.patterns[PID]["ctot-"] = self.patterns[PID]["ctot-"] + abs(track["Curvature"]) 
                     self.patterns[PID]["phitot-"] = self.patterns[PID]["phitot-"] + track["Phi"]
 
-                self.patterns[PID]["frequency"] += 1
+               self.patterns[PID]["frequency"] += 1
 
             except KeyError:
+               
+                
                 if track["Charge"] == 1:
                     self.patterns[PID] = {
                                     "cmin+": track["Curvature"],
@@ -74,7 +103,9 @@ class PatternEncoder:
                                     "frequency" : 1,
                                     "matrix" : matrix
                                     }
-                
+                    
+                        
+                            
                 else:
                     self.patterns[PID] = {
                                     "cmin+": 0,
@@ -92,7 +123,7 @@ class PatternEncoder:
                                     "frequency" : 1,
                                     "matrix" : matrix
                                     }
-
+        
         return PID    
 
     def DecodePatternID(self,PID):
