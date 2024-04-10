@@ -10,7 +10,7 @@ class DetectorGenerator():
         
         self.RadialPosition  = []
         self.NumberOfModules = []
-        self.xrange = [-1,1]
+        self.xrange = []
         self.Modules = {}
 
     def Generate(self):
@@ -34,11 +34,8 @@ class DetectorGenerator():
             for segment in range(self.NumberOfModules[layer]):
            
                 
-                   
-               
                     if segment==0 :
                         x0 =  self.xrange[0]
-                       
                         y0 = radius
                         x1 = x0 + self.ModuleLength[segment]
                         y1 = radius #0 
