@@ -8,7 +8,7 @@ import sys
 import pandas as pd
 import matplotlib as mpl
 import HitEncoder
-import plottinginitialranges
+
 import matplotlib.pyplot as plt
 modules=modules.ModuleNumber()
 
@@ -59,6 +59,9 @@ detector.ModuleLength    = modules.changedetector()[2]
 #[0.63,0.63,0.63,0.63]
 # How far from the origin is each layer
 detector.RadialPosition  = modules.changedetector()[3]
+
+
+detector.xrange = modules.changedetector()[6]
 detector.Generate()
 
 
@@ -109,7 +112,7 @@ fighist.savefig("Frequencies.png")
 # This will print the pattern frequencies and pattern IDs, to see what an individual pattern
 # ID looks like run "python PlotID PID" where PID is the number you want to see 
 
-
+import plottinginitialranges
 fighist,axhist = plt.subplots(1,1,figsize=(10,10))
 FGraph = plottinginitialranges.FindingRanges(fighist,axhist)
 FGraph.plot()
