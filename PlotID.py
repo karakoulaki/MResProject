@@ -1,5 +1,5 @@
 import DetectorGenerator 
-import PatternEncoder
+import PatternEncoder #PatternEncodernormal
 import DetectorTrackGraphMatplotlib
 import matplotlib as mpl
 import modules
@@ -22,11 +22,14 @@ detector.NumberOfModules = modules.changedetector()[1]
 detector.ModuleLength    = modules.changedetector()[2]
 # How far from the origin is each layer
 detector.RadialPosition  = modules.changedetector()[3]
+
+
+detector.xrange = modules.changedetector()[6]
 detector.Generate()
 
 # Load pattern bank
-PatternEncoder = PatternEncoder.PatternEncoder(detector)
-PatternEncoder.LoadPatterns("patterns")
+PatternEncoder = PatternEncoder.PatternEncoder(detector) #PatternEncodernormal
+PatternEncoder.LoadPatterns("patternsnormal")
 
 # PID of interest
 PID = int(sys.argv[1])
