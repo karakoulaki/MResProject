@@ -2,7 +2,7 @@ from math import *
 import numpy as np
 import pickle
 import modules
-
+import sys
 
 modules=modules.ModuleNumber()
 class TrackGenerator:
@@ -35,21 +35,26 @@ class TrackGenerator:
                          "Charge" : Sign}
                     self.allTracks.append(alltracks)
                 else:
-                    Curvature =  np.random.uniform(self.Curvature_Range[0],self.Curvature_Range[1]) #0,38
-                    #self.Curvature_Range[0],self.Curvature_Range[1]
-                    #self.Curvature_Range[0]-self.Curvature_Range[1],self.Curvature_Range[0]+self.Curvature_Range[1]
-                    Sign = np.random.choice([-1,1]) #change this to 1
+                    
+                   # x = np.linspace(self.Curvature_Range[0],self.Curvature_Range[1],int(sys.argv[2]))
+                  
+                    #expo=np.exp(x/20)
+                    
+                    #Curvature = np.random.choice(expo)
+                    Curvature = np.random.uniform(self.Curvature_Range[0],self.Curvature_Range[1]) 
+                    Sign = np.random.choice([-1,1])
+                    #np.random.choice([-1,1]) #change this to 1
                     Curvature = Curvature*Sign
                     Phi      = self.phi0_Range[0]
                     alltracks = {"EventNumber" : EventNumber,
                          "TrackNumber" : i,
                          "Curvature" : Curvature,
                          "Charge" : Sign,
-                         "Phi": Phi}
+                         "Phi": Phi
+                         }
                     self.allTracks.append(alltracks)
                     
-                Phi      =self.phi0_Range[0]
-
+                Phi      = self.phi0_Range[0]
                 track = {"EventNumber" : EventNumber,
                          "TrackNumber" : i,
                          "Curvature" : Curvature,
