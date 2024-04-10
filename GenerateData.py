@@ -5,7 +5,8 @@ Created on Fri Mar  1 09:48:56 2024
 
 @author: kk423
 """
-
+import time 
+start1=time.time()
 import DetectorGenerator 
 import TrackGenerator
 import HitGenerator
@@ -15,13 +16,16 @@ import modules
 import sys
 import matplotlib as mpl
 import HitEncoder
-
+import matplotlib.pyplot as plt
+import numpy as np
+end1 = time.time()
+print(end1-start1)
+start2=time.time()
 modules=modules.ModuleNumber()
 
 mpl.use('Agg')
 
-import matplotlib.pyplot as plt
-import numpy as np
+
 # Create Axes for plotting, x and y lims need to be larger than the detector, tracks are produced from 0,0 outwards
 figxy,axxy = plt.subplots(1,1,figsize=(30,30))
 axxy.set_xlim(-1.5,1.5)
@@ -50,8 +54,12 @@ detector.ModuleLength    = modules.changedetector()[2]
 #[0.63,0.63,0.63,0.63]
 # How far from the origin is each layer
 detector.RadialPosition  = modules.changedetector()[3]
-detector.Generate()
 
+detector.xrange = modules.changedetector()[6]
+detector.Generate()
+end2 = time.time()
+print(end2-start2)
+start3=time.time()
 # Generate tracks, ntracks in each event with nevents
 tracks = TrackGenerator.TrackGenerator()
 tracks.NumberOfTracksToGenerate = ntracks
@@ -65,14 +73,19 @@ tracks.phi0_Range               = [np.pi/2,np.pi/2]
 tracks.Curvature_Range          = [0,100] # FindingRanges2.Generate()[1][0]
 tracks.constantPt               = False
 tracks.Generate()
-
+end3=time.time()
+print(end3-start3)
+start4=time.time()
 # Generate hits by checking if a track generated above crosses a module in the detector 
 hits = HitGenerator.HitCoordinates()
 # Minimum number of modules for each track to be kept, this equates to one hit in each layer for this example
-hits.MinimumHits = modules.changedetector()[0]
+hits.MinimumHits = 1
 tracks.Tracks = hits.Generate(detector.Modules,tracks.Tracks)
+end4=time.time()
+print(end4-start4)
+start5=time.time()
 #tracks.Tracks = hits.Generate(detector.Modules,tracks.Tracks)
-if nevents*ntracks <= 100:
+if nevents*ntracks <= 10:
     # Plot detector
     DGraph = DetectorTrackGraphMatplotlib.DetectorGraph(fig=figxy,ax=axxy)
     DGraph.plot(detector.Modules)
@@ -92,6 +105,9 @@ if nevents*ntracks <= 100:
 # Initialise pattern encoder
 PatternEncoder = PatternEncoder.PatternEncoder(detector)
 HitEncoder = HitEncoder.HitEncoder(detector)
+end5=time.time()
+print(end5-start5)
+start6=time.time()
 # Iterate through the tracks to generate a pattern for each track
 # Save the track curvature and phi
 # If the track is already in the bank save the minimum and maximum curvature and phi
@@ -109,11 +125,12 @@ if SavePatterns:
 
 
 # Plot the frequencies of all the patterns found in the tracks
-fighist,axhist = plt.subplots(1,1,figsize=(30,30))
-PGraph = DetectorTrackGraphMatplotlib.PatternGraph(fighist,axhist)
-PGraph.plot(PatternEncoder)
-fighist.savefig("Frequencies.png")
-
-import FindingRanges
-FindingRanges=FindingRanges.FindingRanges()
-FindingRanges.Generate()
+#fighist,axhist = plt.subplots(1,1,figsize=(30,30))
+#PGraph = DetectorTrackGraphMatplotlib.PatternGraph(fighist,axhist)
+#PGraph.plot(PatternEncoder)
+#fighist.savefig("Frequencies.png")
+end6=time.time()
+print(end6-start6)
+#import FindingRanges
+#FindingRanges=FindingRanges.FindingRanges()
+#FindingRanges.Generate()
