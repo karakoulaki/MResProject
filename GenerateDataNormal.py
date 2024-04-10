@@ -10,7 +10,7 @@ Created on Fri Mar  1 09:49:53 2024
 import DetectorGenerator 
 import TrackGeneratorNormal
 import HitGenerator
-import PatternEncoder
+import PatternEncodernormal
 import DetectorTrackGraphMatplotlib
 import modules
 import sys
@@ -51,6 +51,8 @@ detector.ModuleLength    = modules.changedetector()[2]
 #[0.63,0.63,0.63,0.63]
 # How far from the origin is each layer
 detector.RadialPosition  = modules.changedetector()[3]
+
+detector.xrange = modules.changedetector()[6]
 detector.Generate()
 
 # Generate tracks, ntracks in each event with nevents
@@ -63,7 +65,8 @@ tracks.RandomSeed               = 0
 tracks.phi0_Range               = [np.pi/2,np.pi/2]
 # Tracks generated from a normal distribution in curvature mean = Curvature_range[0] and Curvature std = Curvature_range[1]
 # Curvature is 1/pT with some factors for magnetic field, in this dummy example see curvature as 1/pT
-tracks.Curvature_Range          = modules.changedetector()[5] # FindingRanges2.Generate()[1][0]
+tracks.Curvature_Range          = [50,25]
+#modules.changedetector()[5] # FindingRanges2.Generate()[1][0]
 tracks.constantPt               = False
 tracks.Generate()
 
@@ -73,7 +76,7 @@ hits = HitGenerator.HitCoordinates()
 hits.MinimumHits = modules.changedetector()[0]
 tracks.Tracks = hits.Generate(detector.Modules,tracks.Tracks)
 #tracks.Tracks = hits.Generate(detector.Modules,tracks.Tracks)
-if nevents*ntracks <= 100:
+if nevents*ntracks <= 10:
     # Plot detector
     DGraph = DetectorTrackGraphMatplotlib.DetectorGraph(fig=figxy,ax=axxy)
     DGraph.plot(detector.Modules)
@@ -91,7 +94,7 @@ if nevents*ntracks <= 100:
     figxy.savefig("Tracks.png")
 
 # Initialise pattern encoder
-PatternEncoder = PatternEncoder.PatternEncoder(detector)
+PatternEncoder = PatternEncodernormal.PatternEncoder(detector)
 HitEncoder = HitEncoder.HitEncoder(detector)
 # Iterate through the tracks to generate a pattern for each track
 # Save the track curvature and phi
@@ -110,8 +113,8 @@ if SavePatterns:
 
 
 # Plot the frequencies of all the patterns found in the tracks
-fighist,axhist = plt.subplots(1,1,figsize=(30,30))
-PGraph = DetectorTrackGraphMatplotlib.PatternGraph(fighist,axhist)
-PGraph.plot(PatternEncoder)
-fighist.savefig("Frequencies.png")
+#fighist,axhist = plt.subplots(1,1,figsize=(30,30))
+#PGraph = DetectorTrackGraphMatplotlib.PatternGraph(fighist,axhist)
+#PGraph.plot(PatternEncoder)
+#fighist.savefig("Frequencies.png")
 
