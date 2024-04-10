@@ -35,6 +35,7 @@ detector.NumberOfModules = modules.changedetector()[1]
 detector.ModuleLength    = modules.changedetector()[2]
 # How far from the origin is each layer
 detector.RadialPosition  = modules.changedetector()[3]
+detector.xrange = modules.changedetector()[6]
 detector.Generate()
 
 # Generate tracks, ntracks in each event with nevents
@@ -71,10 +72,22 @@ if len(hits.Hits) > 0:
         print("Input hitpattern: ",BitID.bin)
         print("True Track ID: ",BitID.int)
         TrueTrackIDs.append(BitID)
+        
+        
+        
+        
         Qbits = QtrackWrapper(BitID.bin)
         QTrackIDs.append(Qbits)
         print("Q Predicted Track ID: ",Qbits.int)
         print("========================")
+        import csv
+        f = open('tracksencoder.csv','w')
+        writer = csv.writer(f)
+
+        writer.writerow(["ID"])
+        writer.writerow([BitID.bin])
+
+        
 
         if plot:
             DGraph = DetectorTrackGraphMatplotlib.DetectorGraph(fig=figxy,ax=axxy)
@@ -88,6 +101,6 @@ if len(hits.Hits) > 0:
                 PGraph.plotsinglepattern(TrackID,PatternEncoder,TGraph)
         figxy.savefig("Track.png")
 
-
+    f.close()
 
 
