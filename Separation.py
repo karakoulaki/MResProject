@@ -14,7 +14,7 @@ class Separation:
     
                 
     def plot(self):
-        file_path = "patternsfull.csv"
+        file_path = "patternsnormalfull.csv"
         df = pd.read_csv(file_path)
         df = pd.DataFrame(df)
         #df['cmax'] = [f[0][0]]
