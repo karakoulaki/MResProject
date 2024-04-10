@@ -33,21 +33,22 @@ class ModuleNumber:
         curvature_range.append(df.at[0,'standard deviation'])
        
         for i in range(self.nlayers):
-            modules.append(4)
-
+            modules.append(12)
+            
         if modules[0]>3:
             for j in range(self.nlayers):
                 for i in range(modules[j]):
-                    if i==0 or i==modules[j]-1:
-                        length.append(self.initiallength)
-                    else:
-                        length.append(self.initiallength/(modules[0]/2))
+                    #if i==0 or i==modules[j]-1:
+                        #length.append(self.initiallength)
+                    #else:
+                        length.append(self.initiallength/4)
         else:
             for i in range(sum(modules)):
                 length.append(self.initiallength)
+        x = (3*self.initiallength+(modules[0]-1)*0.001)/2
             
-        
+        xrange=[-x,x]
                 
        
-        return self.nlayers, modules, length,  radialposition, self.phi0_range, curvature_range
+        return self.nlayers, modules, length,  radialposition, self.phi0_range, curvature_range, xrange
 
