@@ -47,12 +47,12 @@ class TrackGenerator:
                     Sign = np.random.choice([-1,1])
                     #np.random.choice([-1,1])
                     Curvature = Curvature*Sign
-                    Phi      = self.phi0_Range[0]
+                    Phi      = self.phi0_Range[0] #erase that
                     alltracks = {"EventNumber" : EventNumber,
                          "TrackNumber" : i,
                          "Curvature" : Curvature,
                          "Charge" : Sign,
-                         "Phi": Phi}
+                         "Phi": Phi} #and that
                     self.allTracks.append(alltracks)
                     
                 Phi      = self.phi0_Range[0]
