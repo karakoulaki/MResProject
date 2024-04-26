@@ -37,32 +37,44 @@ def parse_string_to_tensor(data_string):
     return torch.tensor(data_list, dtype=torch.float32)
 
 
-df=pd.read_csv("tracksfull10000.csv")
+df=pd.read_csv("train_data5000.csv")
 df=pd.DataFrame(df) #
+
+ids_to_exclude = [4399120515136, 2199560257568]
+
+# Filter rows to duplicate
+rows_to_duplicate = df[~df['ID'].isin(ids_to_exclude)].copy()
+
+# Concatenate original DataFrame with duplicates
+df = pd.concat([df]  + [rows_to_duplicate]*4, ignore_index=True)
 
 tensor_list = [parse_string_to_tensor(data_string) for data_string in df['Matrix']]
 X_train_tensors = torch.stack(tensor_list)
 #print(X_train_tensors[0])
 X_train_matrices = X_train_tensors.unsqueeze(1)
 #print(X_train_matrices[0])
-batch_size = 32
+batch_size = 64
 dataset = CustomDataset(X_train_matrices)
 train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 
-df2=pd.read_csv("tracksfull_test_small.csv")
+df2=pd.read_csv("test_data.csv")
 df2=pd.DataFrame(df2)
 
 tensor_list2 = [parse_string_to_tensor(data_string) for data_string in df2['Matrix']]
 X_test_tensors = torch.stack(tensor_list2)
 X_test_matrices = X_test_tensors.unsqueeze(1)
 dataset2 = CustomDataset(X_test_matrices)
-test_loader = DataLoader(dataset2, batch_size=batch_size, shuffle=True)
+test_loader = DataLoader(dataset2, batch_size=batch_size, shuffle=False)
 
-df3=pd.read_csv("tracksfull_validation.csv")
+df3=pd.read_csv("validation_data.csv")
 df3=pd.DataFrame(df3)
 
+# Filter rows to duplicate
+#rows_to_duplicate3 = df3[~df3['ID'].isin(ids_to_exclude)].copy()
 
+# Concatenate original DataFrame with duplicates
+#df3 = pd.concat([df3]  + [rows_to_duplicate3]*4, ignore_index=True)
 tensor_list3 = [parse_string_to_tensor(data_string) for data_string in df3['Matrix']]
 
 # Stack the tensors to create a batch of input data
@@ -140,7 +152,7 @@ for epoch in range(1, n_epochs+1):
      
         # perform a single optimization step (parameter update)
         optimizer.step()
-        binary_output = (outputs > 0.5).float() 
+       # binary_output = (outputs > 0.5).float() 
         # update running training loss
         train_loss += loss.item()*images.size(0)
         
@@ -201,19 +213,32 @@ with torch.no_grad():
         num_batches += 1
         
         
+        
+        
     
 # Calculate average test loss
-   
 avg_test_loss = test_loss / num_batches
 print("Average Test Loss:", avg_test_loss)
 
-plt.figure(figsize=(40, 4))
-for i in range(30):
-    plt.subplot(2, 30, i + 1)
+# Plot histogram of reconstruction errors
+plt.hist(reconstruction_errors, bins=20, density=True)
+
+plt.xlabel('Reconstruction Error')
+plt.ylabel('Density')
+plt.title('Histogram of Reconstruction Errors MSE')
+plt.show()
+
+
+        
+
+n=19
+plt.figure(figsize=(n+10, 4))
+for i in range(n):
+    plt.subplot(2, n, i + 1)
     plt.imshow(images[i].squeeze().detach().numpy(), cmap='gray')
     plt.title('Original')
     plt.axis('off')
-    plt.subplot(2, 30, i + 31)
+    plt.subplot(2, n, i + n+1)
     plt.imshow(outputs[i].squeeze().detach().numpy(), cmap='gray')
     plt.title('Reconstructed')
     plt.axis('off')
