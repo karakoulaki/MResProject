@@ -29,7 +29,7 @@ detector.Generate()
 
 # Load pattern bank
 PatternEncoder = PatternEncoder.PatternEncoder(detector) #PatternEncodernormal
-PatternEncoder.LoadPatterns("patternsnormal")
+PatternEncoder.LoadPatterns("patterns")
 
 # PID of interest
 PID = int(sys.argv[1])
