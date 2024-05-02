@@ -39,7 +39,7 @@ class PatternEncoder:
                import os
                titles = ["ID","Matrix","Curvature", "Phi"]
 
-               filename = "validation_data5000.csv"
+               filename = "validation_data.csv"
                
                if not os.path.exists(filename) or os.stat(filename).st_size == 0:
                    with open(filename, "a") as f3:
