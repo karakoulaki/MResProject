@@ -45,7 +45,7 @@ class ModuleNumber:
         else:
             for i in range(sum(modules)):
                 length.append(self.initiallength)
-        x = (3*self.initiallength+(modules[0]-1)*0.001)/2
+        x = (3*self.initiallength)/2
             
         xrange=[-x,x]
                 
