@@ -43,7 +43,7 @@ class DetectorGenerator():
                         elementID += 1
                     else:
                         
-                        x0 =  x1 + 0.001
+                        x0 =  x1 
                         y0 = radius
                         x1 = x0 + self.ModuleLength[segment]
                         y1 = radius 
