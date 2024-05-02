@@ -36,7 +36,7 @@ class TrackGenerator:
                     self.allTracks.append(alltracks)
                 else:
                     
-                   # x = np.linspace(self.Curvature_Range[0],self.Curvature_Range[1],int(sys.argv[2]))
+                    #x = np.linspace(self.Curvature_Range[0],self.Curvature_Range[1],int(sys.argv[2]))
                   
                     #expo=np.exp(x/20)
                     
