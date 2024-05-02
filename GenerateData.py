@@ -70,7 +70,7 @@ tracks.RandomSeed               = 0
 tracks.phi0_Range               = [np.pi/2,np.pi/2]
 # Tracks generated from a normal distribution in curvature mean = Curvature_range[0] and Curvature std = Curvature_range[1]
 # Curvature is 1/pT with some factors for magnetic field, in this dummy example see curvature as 1/pT
-tracks.Curvature_Range          = [0,100] # FindingRanges2.Generate()[1][0]
+tracks.Curvature_Range          = [0,100] # FindingRanges2.Generate()[1][0] 27
 tracks.constantPt               = False
 tracks.Generate()
 end3=time.time()
