@@ -79,7 +79,7 @@ start4=time.time()
 # Generate hits by checking if a track generated above crosses a module in the detector 
 hits = HitGenerator.HitCoordinates()
 # Minimum number of modules for each track to be kept, this equates to one hit in each layer for this example
-hits.MinimumHits = 1
+hits.MinimumHits = 4
 tracks.Tracks = hits.Generate(detector.Modules,tracks.Tracks)
 end4=time.time()
 print(end4-start4)
